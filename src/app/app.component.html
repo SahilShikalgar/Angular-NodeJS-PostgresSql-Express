@@ -1,7 +1,7 @@
 <router-outlet></router-outlet>
 <div class="container">
   <div class="row mt-5">
-    <div class="col-md-5 mx-auto">
+    <div class="col-md-6 mx-auto">
       <div class="card">
         <div class="card-header">
           <h4>Company Details</h4>
@@ -16,15 +16,21 @@
               <label>Company Location:</label>
               <input type="text" name="company_location" [(ngModel)]="company_location" class="form-control" />
             </div>
-            <button type="submit" class="btn btn-primary">Add Company</button>
+            <button type="submit" class="btn btn-primary">{{ !editMode ? 'Add Company' : 'Update Company' }}</button>
+            <button type="button" class="btn btn-danger ml-2" *ngIf="editMode" (click)="onCancelEdit()">Cancel</button>
           </form>
         </div>
       </div>
       <div class="card card-body mt-1">
         <ul class="list-group list-card">
-          <li class="list-group-item" *ngFor="let company of comapanyList | async">
-            <span class="float-left">{{ company.name }}</span>
-            <span class="float-right">{{ company.location }}</span>
+          <li class="list-group-item" *ngFor="let company of comapanyList; let i = index;">
+            <span class="float-left">{{ company.name }}, {{ company.location }}.</span>
+            <span class="float-right">
+              <span>
+                <em class="fa fa-edit text-info" (click)="onEditCompany(i)"></em>
+                <em class="fa fa-trash ml-3 text-danger" (click)="onDeleteCompany(i)"></em>
+              </span>
+            </span>
           </li>
         </ul>
       </div>

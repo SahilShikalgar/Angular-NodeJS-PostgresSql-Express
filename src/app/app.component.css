@@ -1,4 +1,9 @@
 .list-card {
-    height: 40vh;
+    height: auto;
+    max-height: 40vh;
     overflow: scroll;
+}
+
+.fa {
+    cursor: pointer;
 }

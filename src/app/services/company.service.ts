@@ -17,4 +17,16 @@ export class CompanyService {
       return response;
     });
   }
+
+  updateCompanyHandler(companyData) {
+    return this.http.put('http://localhost:3000/update-company', companyData).subscribe(response => {
+      return response;
+    });
+  }
+
+  deleteCompanyHandler(index) {
+    return this.http.delete(`http://localhost:3000/delete-company/${index}`).subscribe(response => {
+      return response;
+    });
+  }
 }
