@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyService } from './services/company.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +14,18 @@ export class AppComponent implements OnInit {
   editMode = false;
   selectedCompanyIndex;
   selectedCompanyId;
+  subscription: Subscription;
   constructor(private cs: CompanyService) {  }
 
   ngOnInit() {
-    this.cs.getCompanyList().subscribe(companyList => {
+    this.getCompaniesList();
+  }
+
+  getCompaniesList() {
+    this.subscription ? this.subscription.unsubscribe() : null;
+    this.subscription = this.cs.getCompanyList().subscribe(companyList => {
       this.comapanyList = companyList.reverse();
-      console.log(this.comapanyList);
-    })
+    });
   }
 
   async addCompanyHandler() {
@@ -32,7 +37,7 @@ export class AppComponent implements OnInit {
       });
       if (response) {
         const nextState = {
-          id: this.selectedCompanyIndex,
+          id: this.selectedCompanyId,
           name: this.company_name,
           location: this.company_location
         };
@@ -47,10 +52,9 @@ export class AppComponent implements OnInit {
           company_location: this.company_location
       });
       if (response) {
-        this.comapanyList.unshift({
-          name: this.company_name,
-          location: this.company_location
-        });
+        setTimeout(() => {
+          this.getCompaniesList();
+        }, 100)
       }
     }
     this.setInputFieldValues('', '');
